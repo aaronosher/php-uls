@@ -23,6 +23,6 @@ class UlsServiceProvider extends BaseServiceProvider
     }
 
     public function configPath() {
-        return __DIR__ . "../config/uls.php";
+        return __DIR__ . "/../config/uls.php";
     }
 }
