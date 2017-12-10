@@ -29,7 +29,6 @@ class Uls
     public function __construct() {
         $this->version = config("uls.version", 2);
         if ($this->version < $this->_minversion) {
-            throw new \Exception("Only ULS versions $this->_minversion and higher are supported. Assuming min version.");
             $this->version = $this->_minversion;
             \Log::info("VATUSA\Uls: Version was set below minimum version. Assuming version of $this->_minversion instead of " . config("uls.version", 2));
         }
