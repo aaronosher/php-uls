@@ -1,7 +1,6 @@
 # VATUSA ULS Handling for Laravel 5.x
 
 [![PHP from Packagist](https://img.shields.io/packagist/php-v/vatusa/laravel-uls.svg)]()
-[![Latest Stable Version](https://poser.pugx.org/vatusa/laravel-uls/v/stable)](https://packagist.org/packages/vatusa/laravel-uls)
 [![GitHub license](https://img.shields.io/github/license/vatusa/laravel-uls.svg?style=flat-square)](https://github.com/VATUSA/laravel-uls/blob/master/LICENSE)
 [![GitHub issues](https://img.shields.io/github/issues/vatusa/laravel-uls.svg?style=flat-square)](https://github.com/vatusa/laravel-uls/issues)
 
