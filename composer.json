@@ -15,7 +15,8 @@
     "web-token/jwt-key-mgmt": "^1.0",
     "web-token/jwt-signature": "^1.0",
     "web-token/jwt-checker": "^1.0",
-    "namshi/jose": "^7.0"
+    "namshi/jose": "^7.0",
+    "illuminate/support": "5.3.x|5.4.x|5.5.x"
   },
   "autoload": {
     "psr-4": {
