@@ -21,12 +21,18 @@ use Namshi\JOSE\Base64\Base64Encoder;
 
 class Uls
 {
+    private $_minversion = 2;
     protected $version = 2;
     protected $jwk = [];
     private $token;
 
     public function __construct() {
         $this->version = config("uls.version", 2);
+        if ($this->version < $this->_minversion) {
+            throw new \Exception("Only ULS versions $this->_minversion and higher are supported. Assuming min version.");
+            $this->version = $this->_minversion;
+            \Log::info("VATUSA\Uls: Version was set below minimum version. Assuming version of $this->_minversion instead of " . config("uls.version", 2));
+        }
         $this->jwk = config("uls.jwk", []);
         $this->facility = config("uls.facility", '');
     }
