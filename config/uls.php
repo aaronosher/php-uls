@@ -16,5 +16,10 @@ return [
     /*
      * Set the JSON Web Key retrieved from VATUSA's Facility Management
      */
-    'jwk' => json_deocde(env('ULS_JWK', []), true)
+    'jwk' => json_decode(env('ULS_JWK', []), true),
+
+    /*
+     * Facility 3 letter identifier
+     */
+    'facility' => env('ULS_FACILITY', 'ZZZ')
 ];

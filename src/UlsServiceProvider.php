@@ -17,12 +17,5 @@ class UlsServiceProvider extends BaseServiceProvider
     }
 
     public function register() {
-        /*$this->app->singleton(Uls::class, function ($app) {
-            return new Uls();
-        });*/
-    }
-
-    public function configPath() {
-        return __DIR__ . "/../config/uls.php";
     }
 }

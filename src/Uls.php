@@ -39,10 +39,10 @@ class Uls
 
         switch ($location) {
             case "login":
-                $url = $base . "login?fac=$this->fac" . ($queryString) ? "&$queryString" : "";
+                $url = $base . "login?fac=$this->facility" . (($queryString) ? "&$queryString" : "");
                 break;
             case "info":
-                $url = $base . "info?$queryString";
+                $url = $base . "info?token=$this->token";
                 break;
             default:
                 throw new \Exception("Invalid location");
@@ -58,8 +58,8 @@ class Uls
         }
     }
 
-    public function redirectUrl() {
-        return $this->buildUrl('login');
+    public function redirectUrl($dev = false) {
+        return $this->buildUrl('login', ($dev) ? "dev" : null);
     }
 
     public function verifyToken($token) {
@@ -91,7 +91,7 @@ class Uls
                 new Checker\IssuedAtChecker(),
                 new Checker\NotBeforeChecker(),
                 new Checker\ExpirationTimeChecker(),
-                new Checker\AudienceChecker('Audience'),
+                new Checker\AudienceChecker($this->facility)
             ]
         );
 
@@ -102,7 +102,7 @@ class Uls
         $claims = $jsonConverter->decode($jws->getPayload());
         $claimCheckerManager->check($claims);
 
-        $return = $jwsVerifier->verifyWithKey($jws, $jwk);
+        $return = $jwsVerifier->verifyWithKey($jws, $jwk, 0);
 
         $this->token = $token;
 
