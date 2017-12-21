@@ -28,7 +28,7 @@ class Uls
 
     public function __construct($options = ["version" => 2, "jwk" => [], "facility" => "ZZZ"])
     {
-        if (isset($options["version"]) {
+        if (isset($options["version"])) {
             $this->version = $options["version"];
         }
         if ($this->version < $this->_minversion) {
