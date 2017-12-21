@@ -26,14 +26,22 @@ class Uls
     protected $jwk = [];
     private $token;
 
-    public function __construct() {
-        $this->version = config("uls.version", 2);
+    public function __construct($options=["version" => 2, "jwk" => [], "facility" => "ZZZ"]) {
+        if (isset($options["version"]) { $this->version = $options["version"]; }
         if ($this->version < $this->_minversion) {
             $this->version = $this->_minversion;
             \Log::info("VATUSA\Uls: Version was set below minimum version. Assuming version of $this->_minversion instead of " . config("uls.version", 2));
         }
-        $this->jwk = config("uls.jwk", []);
-        $this->facility = config("uls.facility", '');
+        if(!isset($options["jwk"])) {
+            throw new \Exception("jwk option must be set.");
+        } else {
+            $this->jwk = $options["jwk"];
+        }
+        if(!isset($options["facility"])) {
+            throw new \Exception("facility option must be set.");
+        } else {
+            $this->facility = $options["facility"];
+        }
     }
 
     public function buildUrl($location, $queryString = "") {
