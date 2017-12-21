@@ -26,17 +26,29 @@ class Uls
     protected $jwk = [];
     private $token;
 
-    public function __construct() {
-        $this->version = config("uls.version", 2);
+    public function __construct($options = ["version" => 2, "jwk" => [], "facility" => "ZZZ"])
+    {
+        if (isset($options["version"]) {
+            $this->version = $options["version"];
+        }
         if ($this->version < $this->_minversion) {
             $this->version = $this->_minversion;
-            \Log::info("VATUSA\Uls: Version was set below minimum version. Assuming version of $this->_minversion instead of " . config("uls.version", 2));
+            trigger_error("VATUSA\Uls: Version was set below minimum version. Assuming version of $this->_minversion instead of " . $options['version'], E_USER_NOTICE);
         }
-        $this->jwk = config("uls.jwk", []);
-        $this->facility = config("uls.facility", '');
+        if (!isset($options["jwk"])) {
+            throw new \Exception("jwk option must be set.");
+        } else {
+            $this->jwk = $options["jwk"];
+        }
+        if (!isset($options["facility"])) {
+            throw new \Exception("facility option must be set.");
+        } else {
+            $this->facility = $options["facility"];
+        }
     }
 
-    public function buildUrl($location, $queryString = "") {
+    public function buildUrl($location, $queryString = "")
+    {
         $base = "https://login.vatusa.net/";
         $base .= ($this->version == 2) ? "v2/" : "";
 
@@ -56,20 +68,27 @@ class Uls
         return $url;
     }
 
-    public function setJwk($jwk) {
+    public function setJwk($jwk)
+    {
         $new_jwk = json_decode($jwk, true);
         if (!$new_jwk) {
             throw new \InvalidArgumentException("Invalid JWK");
         }
     }
 
-    public function redirectUrl($dev = false) {
+    public function redirectUrl($dev = false)
+    {
         return $this->buildUrl('login', ($dev) ? "dev" : null);
     }
 
-    public function verifyToken($token) {
-        if (!$token) { return false; }
-        if (empty($this->jwk)) { throw new \Exception("Invalid JWK"); }
+    public function verifyToken($token)
+    {
+        if (!$token) {
+            return false;
+        }
+        if (empty($this->jwk)) {
+            throw new \Exception("Invalid JWK");
+        }
 
         // Support all algorithms for future growth
         $algorithmManager = AlgorithmManager::create([
@@ -112,27 +131,29 @@ class Uls
         $this->token = $token;
 
         return $return;
-     }
+    }
 
-     public function getInfo() {
+    public function getInfo()
+    {
         return json_decode($this->curlInfo("GET", $this->buildUrl("info", "token=" . $this->token)), true);
-     }
+    }
 
-     private function curlInfo($method, $url, $postString = "") {
-         $ch = curl_init();
+    private function curlInfo($method, $url, $postString = "")
+    {
+        $ch = curl_init();
 
-         curl_setopt_array($ch, [
-             CURLOPT_URL            => $url,
-             CURLOPT_RETURNTRANSFER => 1,
-             CURLOPT_TIMEOUT        => 15,
-             CURLOPT_POST           => ($method=="POST") ? true : false,
-             CURLOPT_POSTFIELDS     => ($method=="POST") ? $postString : null
-         ]);
-         $response = curl_exec($ch);
-         if (!$response) {
-             \Log::critical("Laravel-ULS/Curl: error occurred: " . curl_error($ch) . ", error number: #" . curl_errno($ch));
-             return false;
-         }
-         return $response;
-     }
+        curl_setopt_array($ch, [
+           CURLOPT_URL            => $url,
+           CURLOPT_RETURNTRANSFER => 1,
+           CURLOPT_TIMEOUT        => 15,
+           CURLOPT_POST           => ($method=="POST") ? true : false,
+           CURLOPT_POSTFIELDS     => ($method=="POST") ? $postString : null
+        ]);
+        $response = curl_exec($ch);
+        if (!$response) {
+            trigger_error("PHP-ULS/Curl: error occurred: " . curl_error($ch) . ", error number: #" . curl_errno($ch), E_USER_ERROR);
+            return false;
+        }
+        return $response;
+    }
 }
