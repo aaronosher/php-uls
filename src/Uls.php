@@ -49,7 +49,7 @@ class Uls
 
     public function buildUrl($location, $queryString = "")
     {
-        $base = "https://login.vatusa.net/";
+        $base = "https://login.vatusa.net/uls/";
         $base .= ($this->version == 2) ? "v2/" : "";
 
         $url = "";
