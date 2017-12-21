@@ -28,12 +28,12 @@ class Uls
 
     public function __construct($options = ["version" => 2, "jwk" => [], "facility" => "ZZZ"])
     {
-        if (isset($options["version"]) {
+        if (isset($options["version"])) {
             $this->version = $options["version"];
         }
         if ($this->version < $this->_minversion) {
             $this->version = $this->_minversion;
-            trigger_error("VATUSA\Uls: Version was set below minimum version. Assuming version of $this->_minversion instead of " . $options['version'], E_USER_NOTICE);
+            throw new ErrorException("VATUSA\Uls: Version was set below minimum version. Assuming version of $this->_minversion instead of " . $options['version'], 0, E_NOTICE);
         }
         if (!isset($options["jwk"])) {
             throw new \Exception("jwk option must be set.");
@@ -49,7 +49,7 @@ class Uls
 
     public function buildUrl($location, $queryString = "")
     {
-        $base = "https://login.vatusa.net/";
+        $base = "https://login.vatusa.net/uls/";
         $base .= ($this->version == 2) ? "v2/" : "";
 
         $url = "";
@@ -145,13 +145,17 @@ class Uls
         curl_setopt_array($ch, [
            CURLOPT_URL            => $url,
            CURLOPT_RETURNTRANSFER => 1,
-           CURLOPT_TIMEOUT        => 15,
-           CURLOPT_POST           => ($method=="POST") ? true : false,
-           CURLOPT_POSTFIELDS     => ($method=="POST") ? $postString : null
+           CURLOPT_TIMEOUT        => 15
         ]);
+        if ($method == "POST") {
+            curl_setopt_array($ch, [
+                CURLOPT_POST           => true,
+                CURLOPT_POSTFIELDS     => $postString
+            ]);
+        }
         $response = curl_exec($ch);
         if (!$response) {
-            trigger_error("PHP-ULS/Curl: error occurred: " . curl_error($ch) . ", error number: #" . curl_errno($ch), E_USER_ERROR);
+            throw new ErrorException("PHP-ULS/Curl: error occurred: " . curl_error($ch) . ", error number: #" . curl_errno($ch), 0, E_ERROR);
             return false;
         }
         return $response;
