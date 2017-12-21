@@ -1,7 +1,7 @@
 {
-  "name": "vatusa/laravel-uls",
+  "name": "vatusa/php-uls",
   "description": "Adds ULS authentication support to your application",
-  "keywords": ["laravel", "vatusa", "uls"],
+  "keywords": ["vatusa", "uls"],
   "license": "GPL-3.0+",
   "authors": [
     {
