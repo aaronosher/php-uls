@@ -30,7 +30,7 @@ class Uls
         if (isset($options["version"]) { $this->version = $options["version"]; }
         if ($this->version < $this->_minversion) {
             $this->version = $this->_minversion;
-            \Log::info("VATUSA\Uls: Version was set below minimum version. Assuming version of $this->_minversion instead of " . config("uls.version", 2));
+            trigger_error("VATUSA\Uls: Version was set below minimum version. Assuming version of $this->_minversion instead of " . $options['version'], E_USER_NOTICE);
         }
         if(!isset($options["jwk"])) {
             throw new \Exception("jwk option must be set.");
@@ -138,7 +138,7 @@ class Uls
          ]);
          $response = curl_exec($ch);
          if (!$response) {
-             \Log::critical("Laravel-ULS/Curl: error occurred: " . curl_error($ch) . ", error number: #" . curl_errno($ch));
+             trigger_error("PHP-ULS/Curl: error occurred: " . curl_error($ch) . ", error number: #" . curl_errno($ch), E_USER_ERROR);
              return false;
          }
          return $response;
