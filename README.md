@@ -1,4 +1,4 @@
-# VATUSA ULS Handling for Laravel 5.x
+# VATUSA ULS Handling for PHP >=7.1.0
 
 [![PHP from Packagist](https://img.shields.io/packagist/php-v/vatusa/laravel-uls.svg?style=flat-square)]()
 [![Latest Stable Version](https://poser.pugx.org/vatusa/laravel-uls/v/stable?format=flat-square)](https://packagist.org/packages/vatusa/laravel-uls)
@@ -12,7 +12,7 @@ Provides a wrapper around the web-token libraries for use with VATUSA's Unified 
 
 ## Installation
 
-1. Require the `vatusa/laravel-uls` package in your `composer.json` and update your dependencies:
+1. Require the `vatusa/php-uls` package in your `composer.json` and update your dependencies:
     ```sh
     $ composer require vatusa/laravel-uls
     ```
@@ -21,43 +21,14 @@ Provides a wrapper around the web-token libraries for use with VATUSA's Unified 
 
 ## Configuration
 
-The defaults are set in `config/uls.php`. Copy this file to your own config directory to modify the values. You can publish the config using this command:
-```sh
-$ php artisan vendor:publish --provider="VATUSA\Uls\UlsServiceProvider"
-```
-    
+For php-uls to work you need to configure your jwk, uls version, and facility id. These are set through an options array in the constructor:
 ```php
-return [
-    /*
-    |--------------------------------------------------------------------------
-    | Laravel ULS
-    |--------------------------------------------------------------------------
-    */
-
-    /*
-     * ULS Version to use
-     *
-     * By default we'll use 2
-     */
-    'version' => env('ULS_VERSION', 2),
-
-    /*
-     * Set the JSON Web Key retrieved from VATUSA's Facility Management
-     */
-    'jwk' => json_decode(env('ULS_JWK', []), true),
-
-    /*
-     * Facility 3 letter identifier
-     */
-    'facility' => env('ULS_FACILITY', 'ZZZ')
+$options = [
+    "version" => 2,
+    "jwk" => $jwk,
+    "facility" => "ZZZ"
 ];
-```
-
-### Lumen
-
-On Laravel Lumen, load your configuration file manually in `bootstrap/app.php`:
-```php
-$app->configure('uls');
+$uls = new \Vatusa\Uls\Uls($options);
 ```
 
 ## Usage
@@ -76,7 +47,7 @@ Using laravel-uls is fairly easy.
     ```
 4. To verify a token, assume $token is the full token received from VATUSA's ULS endpoint
     ```php
-    $uls = new Uls();
+    $uls = new Uls($options);
     if ($uls->verifyToken($token)) {
        // Token was true
     }
