@@ -145,10 +145,14 @@ class Uls
         curl_setopt_array($ch, [
            CURLOPT_URL            => $url,
            CURLOPT_RETURNTRANSFER => 1,
-           CURLOPT_TIMEOUT        => 15,
-           CURLOPT_POST           => ($method=="POST") ? true : false,
-           CURLOPT_POSTFIELDS     => ($method=="POST") ? $postString : null
+           CURLOPT_TIMEOUT        => 15
         ]);
+        if ($method == "POST") {
+            curl_setopt_array($ch, [
+                CURLOPT_POST           => true,
+                CURLOPT_POSTFIELDS     => $postString
+            ]);
+        }
         $response = curl_exec($ch);
         if (!$response) {
             throw new ErrorException("PHP-ULS/Curl: error occurred: " . curl_error($ch) . ", error number: #" . curl_errno($ch), 0, E_ERROR);
