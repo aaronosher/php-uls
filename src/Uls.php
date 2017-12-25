@@ -18,6 +18,7 @@ use Jose\Component\Signature\JWSTokenSupport;
 use Jose\Component\Checker\InvalidHeaderException;
 use Jose\Component\Checker\InvalidClaimException;
 use Namshi\JOSE\Base64\Base64Encoder;
+use Psr\Log\LoggerInterface;
 
 class Uls
 {
@@ -25,15 +26,19 @@ class Uls
     protected $version = 2;
     protected $jwk = [];
     private $token;
+    private $logger;
 
-    public function __construct($options = ["version" => 2, "jwk" => [], "facility" => "ZZZ"])
+    public function __construct($options = ["version" => 2, "jwk" => [], "facility" => "ZZZ"], LoggerInterface $logger)
     {
+        if (isset($logger)) {
+            $this->logger = $logger;
+        }
         if (isset($options["version"])) {
             $this->version = $options["version"];
         }
         if ($this->version < $this->_minversion) {
             $this->version = $this->_minversion;
-            throw new ErrorException("VATUSA\Uls: Version was set below minimum version. Assuming version of $this->_minversion instead of " . $options['version'], 0, E_NOTICE);
+            $this->log("VATUSA\Uls: Version was set below minimum version. Assuming version of $this->_minversion instead of " . $options['version'], "notice");
         }
         if (!isset($options["jwk"])) {
             throw new \Exception("jwk option must be set.");
@@ -45,6 +50,42 @@ class Uls
         } else {
             $this->facility = $options["facility"];
         }
+    }
+
+    private function log($message="", $level="info") {
+        if(!isset($this->logger)) {
+            return false;
+        }
+
+        switch ($level) {
+            case "emergency":
+                $this->logger->emergency($message);
+                break;
+
+            case "alert":
+                $this->logger->alert($message);
+                break;
+
+            case "warning":
+                $this->logger->warning($message);
+                break;
+
+            case "notice":
+                $this->logger->notice($message);
+                break;
+
+            case "info":
+                $this->logger->info($message);
+                break;
+
+            case "debug":
+                $this->logger->debug($message);
+                break;
+
+            default:
+                $this->logger->log($level, $message);
+        }
+        return true;
     }
 
     public function buildUrl($location, $queryString = "")
@@ -155,7 +196,7 @@ class Uls
         }
         $response = curl_exec($ch);
         if (!$response) {
-            throw new ErrorException("PHP-ULS/Curl: error occurred: " . curl_error($ch) . ", error number: #" . curl_errno($ch), 0, E_ERROR);
+            $this->log("PHP-ULS/Curl: error occurred: " . curl_error($ch) . ", error number: #" . curl_errno($ch), "error");
             return false;
         }
         return $response;
