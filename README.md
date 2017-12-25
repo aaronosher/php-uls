@@ -1,10 +1,10 @@
 # VATUSA ULS Handling for PHP >=7.1.0
 
-[![PHP from Packagist](https://img.shields.io/packagist/vatusa/php-uls.svg?style=flat-square)]()
-[![Latest Stable Version](https://poser.pugx.org/vatusa/php-uls/v/stable?format=flat-square)](https://packagist.org/packages/vatusa/laravel-uls)
-[![Total Downloads](https://poser.pugx.org/vatusa/php-uls/downloads?format=flat-square)](https://packagist.org/packages/vatusa/laravel-uls)
-[![GitHub license](https://img.shields.io/github/license/vatusa/php-uls.svg?style=flat-square)](https://github.com/VATUSA/laravel-uls/blob/master/LICENSE)
-[![GitHub issues](https://img.shields.io/github/issues/vatusa/php-uls.svg?style=flat-square)](https://github.com/vatusa/laravel-uls/issues)
+[![PHP from Packagist](https://img.shields.io/packagist/php-v/aaronosher/php-uls.svg?style=flat-square)]()
+[![Latest Stable Version](https://poser.pugx.org/aaronosher/php-uls/v/stable?format=flat-square)](https://packagist.org/packages/aaronosher/php-uls)
+[![Total Downloads](https://poser.pugx.org/aaronosher/php-uls/downloads?format=flat-square)](https://packagist.org/packages/aaronosher/php-uls)
+[![GitHub license](https://img.shields.io/github/license/aaronosher/php-uls.svg?style=flat-square)](https://github.com/aaronosher/php-uls/blob/master/LICENSE)
+[![GitHub issues](https://img.shields.io/github/issues/aaronosher/php-uls.svg?style=flat-square)](https://github.com/aaronosher/php-uls/issues)
 
 ## About
 
