@@ -1,6 +1,6 @@
 {
-  "name": "vatusa/php-uls",
-  "description": "Adds ULS authentication support to your application",
+  "name": "aaronosher/php-uls",
+  "description": "Adds VATUSA ULS authentication support to your application",
   "keywords": ["vatusa", "uls"],
   "license": "GPL-3.0+",
   "authors": [
